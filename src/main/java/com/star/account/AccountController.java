@@ -21,7 +21,7 @@ public class AccountController {
 
 
     @RequestMapping("/login")
-    public String login(@RequestParam("account") String account, @RequestParam("password") String password){
+    public String login(@RequestParam(value = "username", required = false) String account, @RequestParam(value = "password") String password){
         if (null != accountService.selectAccount(account, password)) {
             return "success";
         }

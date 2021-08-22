@@ -6,16 +6,16 @@
 <mapper namespace="com.star.account.AccountService">
     <select id="selectAccount" resultMap="accountMap">
         SELECT
-            fid, faccount, fpassword
+            fid, fusername, fpassword
         FROM
-            t_user_account
+            t_user
         WHERE
-            faccount = #{account} AND fpassword = #{password}
+            fusername = #{username} AND fpassword = #{password}
     </select>
     
     <resultMap id="accountMap" type="com.star.account.Account">
         <id column="fid" property="id"></id>
-        <result column="faccount" property="account"></result>
+        <result column="fusername" property="username"></result>
         <result column="fpassword" property="password"></result>
     </resultMap>
 </mapper>

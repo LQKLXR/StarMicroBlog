@@ -11,5 +11,5 @@ import org.apache.ibatis.annotations.Param;
 @Mapper
 public interface AccountService {
 
-    public Account selectAccount(@Param("account") String account, @Param("password") String password);
+    public Account selectAccount(@Param("username") String username, @Param("password") String password);
 }
