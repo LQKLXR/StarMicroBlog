@@ -1,15 +1,15 @@
 package com.star.account;
 
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
+
+import org.springframework.stereotype.Component;
 
 /**
  * @author 刘乾坤
  * @Date 2021/8/19
  * @Description
  */
-@Mapper
+@Component
 public interface AccountService {
 
-    public Account selectAccount(@Param("username") String username, @Param("password") String password);
+    public String selectAccount(String username, String password);
 }

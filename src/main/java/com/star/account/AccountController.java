@@ -17,7 +17,7 @@ public class AccountController {
 
 
     @Autowired
-    private AccountService accountService;
+    private AccountServiceImpl accountService;
 
 
     @RequestMapping("/login")
