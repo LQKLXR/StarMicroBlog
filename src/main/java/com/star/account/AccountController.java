@@ -6,6 +6,7 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -31,7 +32,7 @@ public class AccountController {
     @Resource(name = "sendMailPool")
     private ExecutorService executorService;
 
-    @RequestMapping("/login")
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
     public String login(@RequestParam(value = "username") String account, @RequestParam(value = "password") String password){
         if (null != accountService.selectAccount(account, password)) {
             return "success";
@@ -39,7 +40,7 @@ public class AccountController {
         return "failure";
     }
 
-    @RequestMapping("/register")
+    @RequestMapping(value = "/register", method = RequestMethod.POST)
     public void register(@RequestParam("email") String email) {
         executorService.submit(() -> sendMail(email));
     }
@@ -48,8 +49,8 @@ public class AccountController {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom(useMailName);
         message.setTo(email);
-        message.setText("您的注册验证码为: " + getVerifyCode());
-        message.setSubject("【星博客】你已收到注册验证码，请尽快进行注册");
+        message.setText("您的注册验证码为: " + getVerifyCode() + "，您正在使用邮箱注册，验证码有效时间 60 秒，请尽快完成注册");
+        message.setSubject("【星博客】星博客注册验证码");
         javaMailSender.send(message);
     }
 

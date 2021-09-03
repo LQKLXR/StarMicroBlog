@@ -1,0 +1,85 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>星博客-注册</title>
+
+    <!-- begin::global styles -->
+    <link rel="stylesheet" href="assets/vendors/bundle.css" type="text/css">
+    <!-- end::global styles -->
+
+    <!-- begin::custom styles -->
+    <link rel="stylesheet" href="assets/css/app.css" type="text/css">
+    <!-- end::custom styles -->
+
+</head>
+<body class="bg-white h-100-vh p-t-0">
+
+<!-- begin::page loader-->
+<div class="page-loader">
+    <div class="spinner-border"></div>
+    <span>正在努力加载</span>
+</div>
+<!-- end::page loader -->
+
+<div class="p-b-50 d-block d-lg-none"></div>
+
+<div class="container h-100-vh">
+    <div class="row align-items-md-center h-100-vh">
+        <div class="col-lg-6 d-none d-lg-block">
+            <img class="img-fluid" src="assets/media/svg/register.svg" alt="...">
+        </div>
+        <div class="col-lg-4 offset-lg-1">
+            <h3>注册账号</h3>
+            <p></p>
+            <form>
+                <div class="form-group mb-4">
+                    <input type="text" class="form-control form-control-lg" id="email" autofocus placeholder="请输入个人邮箱">
+                </div>
+                <div class="form-group mb-4">
+                    <input type="password" class="form-control form-control-lg" placeholder="请输入密码">
+                </div>
+                <div class="form-group mb-4">
+                    <input type="password" class="form-control form-control-lg" placeholder="请确认密码">
+                </div>
+                <div class="form-group">
+                    <div class="custom-control custom-switch">
+                        <input type="checkbox" class="custom-control-input" id="customSwitch" checked="">
+                        <label class="custom-control-label" for="customSwitch">我同意隐私条款</label>
+                    </div>
+                </div>
+            </form>
+            <button class="btn btn-primary btn-lg btn-block btn-uppercase mb-4" id="submit">创建账号</button>
+            <p class="text-right">
+                已有账号?<a href="login.html" class="text-underline">去登陆</a>
+            </p>
+        </div>
+    </div>
+</div>
+</body>
+
+<!-- begin::global scripts -->
+<script src="assets/vendors/bundle.js"></script>
+<!-- end::global scripts -->
+
+<!-- begin::custom scripts -->
+<script src="assets/js/app.js"></script>
+<!-- end::custom scripts -->
+
+<script>
+    $("#submit").click(function(){
+        $.ajax({
+            url : "account/register",
+            async : false,
+            method : "post",
+            data : {"email" : $("#email").val()},
+            success : function (response) {
+
+            }
+        });
+    });
+</script>
+</body>
+</html>
