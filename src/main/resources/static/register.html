@@ -92,7 +92,7 @@
                     swal("验证码已发送，有效时间60秒", "", "info");
                 }
                 else {
-                    swal("不可重复获取", "", "error");
+                    swal("不可重复获取验证码，剩余 " + response + " 秒", "", "error");
                 }
             }
         });
@@ -115,6 +115,27 @@
             swal("密码必须大于8位", "", "error");
             return;
         }
+        if($("#verifyCode").val() == "") {
+            swal("请输入验证码", "", "error");
+            return;
+        }
+        $.ajax({
+            url : "account/register",
+            async : false,
+            method : "post",
+            data : {"email" : $("#email").val(), "password" : $("#password").val(), "verifyCode" : $("#verifyCode").val()},
+            success : function (response) {
+                if (response == "success") {
+                    swal("注册成功，请前往登录", "", "success");
+                }
+                else if (response == "001"){
+                    swal("验证码输入错误", "", "error");
+                }
+                else if (response == "002"){
+                    swal("该账号已经存在，请前往登录", "", "error");
+                }
+            }
+        });
     });
 </script>
 </body>

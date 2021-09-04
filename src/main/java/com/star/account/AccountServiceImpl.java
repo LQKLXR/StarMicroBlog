@@ -1,11 +1,8 @@
 package com.star.account;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
-
-import javax.sql.DataSource;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author 刘乾坤
@@ -15,13 +12,22 @@ import javax.sql.DataSource;
 @Repository
 public class AccountServiceImpl implements AccountService{
 
+    public static final int EXISTED = -1;
+
     @Autowired
-    private JdbcTemplate jdbcTemplate;
+    private AccountService accountService;
 
     @Override
-    public String selectAccount(String username, String password) {
-        String sql = "SELECT fusername FROM t_user WHERE fusername = ? AND fpassword = ?";
-        String selectUsername = jdbcTemplate.queryForObject(sql, new Object[]{username, password}, String.class);
-        return selectUsername;
+    public Account selectAccount(String email, String password) {
+       return accountService.selectAccount(email,password);
+    }
+
+    @Transactional
+    @Override
+    public Integer insertAccount(Account account) {
+        if (null != selectAccount(account.getEmail(), account.getPassword())) {
+            return EXISTED;
+        }
+        return accountService.insertAccount(account);
     }
 }

@@ -1,6 +1,7 @@
 package com.star.account;
 
 
+import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Component;
 
 /**
@@ -8,8 +9,10 @@ import org.springframework.stereotype.Component;
  * @Date 2021/8/19
  * @Description
  */
-@Component
+@Mapper
 public interface AccountService {
 
-    public String selectAccount(String username, String password);
+    public Account selectAccount(String email, String password);
+
+    public Integer insertAccount(Account account);
 }

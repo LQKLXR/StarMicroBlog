@@ -1,20 +1,13 @@
 package com.star.account;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.Date;
 import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -30,7 +23,7 @@ public class AccountController {
 
     private String useMailName = "lqkdevelop@163.com";
     @Autowired
-    private AccountServiceImpl accountService;
+    private AccountService accountService;
     @Autowired
     private JavaMailSender javaMailSender;
     @Resource(name = "sendMailPool")
@@ -52,9 +45,26 @@ public class AccountController {
         ValueOperations opsForValue = redisTemplate.opsForValue();
         Boolean ifAbsent = opsForValue.setIfAbsent(email, verifyCode, 60, TimeUnit.SECONDS);
         if (!ifAbsent) {
-            return "failure";
+            Long expireTime = redisTemplate.getExpire(email);
+            return String.valueOf(expireTime);
         }
         executorService.submit(() -> sendMail(email, verifyCode));
+        return "success";
+    }
+
+    @PostMapping(value = "/register")
+    public String register(@RequestParam("email") String email, @RequestParam("password") String password, @RequestParam("verifyCode") String verifyCode) {
+        ValueOperations opsForValue = redisTemplate.opsForValue();
+        // 如果没有验证码或者验证码不正确
+        if (opsForValue.get(email) == null || !opsForValue.get(email).toString().equals(verifyCode)) {
+            return "001";
+        }
+        Account account = new Account();
+        account.setEmail(email);
+        account.setPassword(password);
+        if (accountService.insertAccount(account) == AccountServiceImpl.EXISTED) {
+            return "002";
+        }
         return "success";
     }
 

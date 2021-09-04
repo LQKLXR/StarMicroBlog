@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 该文件编写mybatis中的mapper接口里面的方法提供对应的sql语句 -->
+<mapper namespace="com.star.account.AccountService">
+    <select id="selectAccount" resultMap="accountMap">
+        SELECT
+            fid, femail, fpassword
+        FROM
+            t_account
+        WHERE
+            femail = #{email} AND fpassword = #{password}
+    </select>
+
+    <insert id="insertAccount" parameterType="com.star.account.Account" keyProperty="id" keyColumn="fid" useGeneratedKeys="true">
+        INSERT INTO
+            t_account(fid, femail, fpassword)
+        VALUES
+            (0 ,#{email}, #{password})
+    </insert>
+
+    <resultMap id="accountMap" type="com.star.account.Account">
+        <id column="fid" property="id"></id>
+        <result column="femail" property="email"></result>
+        <result column="fpassword" property="password"></result>
+    </resultMap>
+</mapper>
